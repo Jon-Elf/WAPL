@@ -1,0 +1,43 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="d-grid gap-2">
+  <a class="btn btn-primary btn-lg" href="{% url 'polls:importcsv' %}">Создать опрос</a>
+</div>
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-8">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th> Опрос </th>
+          <th class="text-end">Кол-во проголосовавших</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for question in latest_question_list %}
+        <tr>
+            <td> <a href="{% url 'polls:results' question.id %}">{{ question.question_text }}</a> </td>
+            <td class="text-end"> {{ numbvote }} </td>
+            <td>{{ question.count }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-2"></div>
+</div>
+
+
+{% endblock %}

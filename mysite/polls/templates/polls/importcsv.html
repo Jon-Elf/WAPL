@@ -1,0 +1,21 @@
+{% extends "polls/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}Импорт{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'polls:index' %}">Главная</a></li>
+<li class="breadcrumb-item active" aria-current="page">Импорт</li>
+{% endblock %}
+
+
+{% block content %}
+<form action="" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Создать</button>
+    {% endbuttons %}
+</form>
+
+{% endblock %}

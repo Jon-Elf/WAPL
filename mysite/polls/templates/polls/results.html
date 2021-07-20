@@ -1,0 +1,46 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Результаты{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'polls:index' %}">Главная</a></li>
+<li class="breadcrumb-item active" aria-current="page">Результаты</li>
+{% endblock %}
+
+{% block content %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Хотите внести свой вклад?</strong> Вы тоже можете проголосовать!
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="container">
+
+
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-8">
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th> Варианты ответа </th>
+          <th> Проценты </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for choice, pixels in voteslist %}
+        <tr>
+            <td> {{choice}} </td>
+            <td><div style="width: {{pixels}}px; height:1em; background-color: red"><div></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-2"></div>
+</div>
+<div class="d-grid gap-2">
+  <a class="btn btn-primary btn-lg" href="{% url 'polls:vote' question.id %}">Голосовать</a>
+  <a class="btn btn-primary btn-lg" href="{% url 'polls:exportcsv' question.id question.question_text %}">Экспортировать <strong>csv</strong></a>
+</div>
+
+{% endblock %}
