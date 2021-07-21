@@ -42,16 +42,24 @@ def reg(request):
 @login_required
 def journal(request, name):
     plant = get_object_or_404(Plant, pk=name)
-    actions = [x for x in Action.objects.all().filter(plant=plant) if x.date >= timezone.now() - datetime.timedelta(days=1)]
-    if request.method=='POST':
-        form = journalForm(request.POST)
-        if form.is_valid():
-            if form.data['choice']=='week':
-                actions = [x for x in Action.objects.all().filter(plant=plant) if x.date >= timezone.now() - datetime.timedelta(days=7)]
 
-    else:
-        form = journalForm()
+    if request.method == 'POST':
+        a = Action(plant=plant, user=request.user, date=timezone.now(), time=5)
+        a.save()
+        print('\n\n\nПоливаю растение...\n\n\n')
+        return redirect(request.path)
+
+
+    form = journalForm()
+    actions = Action.objects.filter(plant=plant, date__gt=timezone.now() - datetime.timedelta(days=1))
+    if 'choice' in request.GET:
+        form = journalForm(request.GET)
+        if form.is_valid():
+            if form.cleaned_data['choice'] == 'week':
+                actions = Action.objects.filter(plant=plant, date__gt=timezone.now() - datetime.timedelta(days=7))
+
     return render(request, 'polls/journal.html', {
         'actions': actions,
+        'plant': plant,
         'form': form
         })

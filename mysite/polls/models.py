@@ -16,5 +16,6 @@ class Action(models.Model):
     user = models.ForeignKey(User, related_name='actions', on_delete=models.CASCADE)
     date = models.DateTimeField('date')
     time = models.IntegerField()
+    done = models.CharField(max_length=11, default='Исполняется')
     def __str__(self):
         return(self.plant.name)

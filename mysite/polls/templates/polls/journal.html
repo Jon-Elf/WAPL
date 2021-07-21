@@ -1,5 +1,9 @@
 {% extends 'polls/base.html' %}
 {% load bootstrap4 %}
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="/">главная</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{plant.name}}</li>
+{% endblock %}
 {% block content %}
 <div class="row">
           <div class="col-2"></div>
@@ -11,6 +15,7 @@
           <th>дата</th>
           <th>инициатор</th>
           <th class="text-end">время</th>
+          <th>статус</th>
         </tr>
       </thead>
       <tbody>
@@ -19,6 +24,7 @@
             <td> {{action.date}} </td>
             <td> {{action.user.username}} </td>
             <td class="text-end"> {{action.time}} </td>
+            <td>{{action.done}}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -27,11 +33,20 @@
   <div class="col-2"></div>
 </div>
 
-<form action="" method="post" class="form">
-    {% csrf_token %}
+<form action="" method="get" class="form">
     {% bootstrap_form form %}
     {% buttons %}
         <button type="submit" class="btn btn-primary">apply</button>
     {% endbuttons %}
 </form>
+
+<form action="" method="post" class="form">
+  {% csrf_token %}
+  {% buttons %}
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit">полить</button>
+      </div>
+  {% endbuttons %}
+</form>
+
 {% endblock %}
