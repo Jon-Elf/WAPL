@@ -16,8 +16,13 @@ from django.utils import timezone
 
 @login_required
 def index(request):
-    print(request.user)
-    return render(request, 'polls/index.html')
+    dates = []
+    for plant in Plant.objects.all():
+        dates.append({'name': plant.name, 'last_watering': plant.last_watering()})
+    return render(request, 'polls/index.html', {
+        'plants': Plant.objects.all(),
+        'dates': dates
+    })
 
 def reg(request):
     if not User.objects.all():
@@ -46,7 +51,6 @@ def journal(request, name):
     if request.method == 'POST':
         a = Action(plant=plant, user=request.user, date=timezone.now(), time=5)
         a.save()
-        print('\n\n\nПоливаю растение...\n\n\n')
         return redirect(request.path)
 
 
@@ -63,3 +67,33 @@ def journal(request, name):
         'plant': plant,
         'form': form
         })
+
+@login_required
+def createplant(request):
+    if request.method=='POST':
+        form = createplantForm(request.POST)
+        if form.is_valid():
+            print('добавляю растение')
+            p = Plant(name=form.cleaned_data['name'], numb=form.cleaned_data['numb'],
+                      time=form.cleaned_data['time'], datetime=form.cleaned_data['datetime'])
+            p.save()
+            messages.success(request, 'Растение успешно добавлено')
+            return redirect('/')
+    else:
+        form = createplantForm()
+    return render(request, 'polls/createplant.html', {
+            'form': form
+            })
+
+
+#def fff(request):
+#
+#    if request.method == 'post':
+#        form = HBBNForm(request.POST)
+#        if form.is_valid():
+#
+#
+#            return redirect()
+#    else:
+#        form = JHGUHJNForm()
+#    return render()

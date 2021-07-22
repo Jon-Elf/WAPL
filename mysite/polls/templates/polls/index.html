@@ -1,1 +1,38 @@
 {% extends "polls/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+<h1 class="text-center">последние полития</h1>
+<div class="row">
+          <div class="col-2"></div>
+          <div class="col-8">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>растение</th>
+          <th class="text-end">дата</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for date in dates %}
+        <tr>
+            <td> <a href= {{ plant.pk }}/journal class="btn btn-primary" role="button">{{ date.name }}</a>
+          </td>
+            <td class="text-end"> {{ date.last_watering }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-2"></div>
+</div>
+{% endblock %}
