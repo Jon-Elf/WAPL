@@ -1,12 +1,17 @@
 {% extends 'polls/base.html' %}
 {% load bootstrap4 %}
 
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="/">главная</a></li>
+<li class="breadcrumb-item active" aria-current="page">новое растение</li>
+{% endblock %}
+
 {% block content %}
 <form action="" method="post" class="form">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
-        <button type="submit" class="btn btn-primary">apply</button>
+        <button type="submit" class="btn btn-primary">create</button>
     {% endbuttons %}
 </form>
 {% endblock %}

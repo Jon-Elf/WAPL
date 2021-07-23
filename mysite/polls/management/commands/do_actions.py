@@ -26,9 +26,10 @@ class Command(BaseCommand):
                 self.disactivate(task)
 
     def check_plant_time(self, plants):
-        for plant in plants.objects.all():
+        for plant in plants.objects.filter(is_active=True):
             if plant not in self.already:
                 if str(plant.datetime)[:-3] == time.strftime('%H:%M', time.localtime()):
+                    print('совпало время')
                     new_action = Action(plant=plant, user=User.objects.all()[0],
                                         done='Исполняется', time=plant.time, date = datetime.datetime.now())
                     new_action.save()

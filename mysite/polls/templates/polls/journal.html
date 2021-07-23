@@ -4,7 +4,23 @@
 <li class="breadcrumb-item"><a href="/">главная</a></li>
 <li class="breadcrumb-item active" aria-current="page">{{plant.name}}</li>
 {% endblock %}
+
 {% block content %}
+
+<a href="/{{ plant.pk }}/removeplant">удалить растение</a><br>
+<a href="/{{ plant.pk }}/editplant">редактировать растение</a><br><br>
+
+{% if button %}
+  <form action="" method="post" class="form">
+    {% csrf_token %}
+    {% buttons %}
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="submit">полить</button>
+        </div>
+        {% endbuttons %}
+      </form>
+{% endif %}
+
 <div class="row">
           <div class="col-2"></div>
           <div class="col-8">
@@ -23,7 +39,7 @@
         <tr>
             <td> {{action.date}} </td>
             <td> {{action.user.username}} </td>
-            <td class="text-end"> {{action.time}} </td>
+            <td class="text-end"> {{action.time}} секунд </td>
             <td>{{action.done}}</td>
         </tr>
         {% endfor %}
@@ -38,15 +54,6 @@
     {% buttons %}
         <button type="submit" class="btn btn-primary">apply</button>
     {% endbuttons %}
-</form>
-
-<form action="" method="post" class="form">
-  {% csrf_token %}
-  {% buttons %}
-      <div class="d-grid gap-2">
-        <button class="btn btn-primary" type="submit">полить</button>
-      </div>
-  {% endbuttons %}
 </form>
 
 {% endblock %}

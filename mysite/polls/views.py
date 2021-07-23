@@ -12,16 +12,13 @@ from django.contrib.auth.models import User
 from .models import Plant, Action
 import datetime
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 @login_required
 def index(request):
-    dates = []
-    for plant in Plant.objects.all():
-        dates.append({'name': plant.name, 'last_watering': plant.last_watering()})
     return render(request, 'polls/index.html', {
-        'plants': Plant.objects.all(),
-        'dates': dates
+        'plants': Plant.objects.filter(is_active=True),
     })
 
 def reg(request):
@@ -45,14 +42,22 @@ def reg(request):
     })
 
 @login_required
-def journal(request, name):
-    plant = get_object_or_404(Plant, pk=name)
+def journal(request, id):
+    plant = get_object_or_404(Plant, pk=id, is_active=True)
 
     if request.method == 'POST':
+        if plant.actions.last():
+            if plant.actions.last().done == 'Исполняется':
+                messages.success(request, 'Растение уже поливается')
+                return redirect(request.path)
         a = Action(plant=plant, user=request.user, date=timezone.now(), time=5)
         a.save()
         return redirect(request.path)
 
+    button = True
+    if plant.actions.last():
+        if plant.actions.last().done == 'Исполняется':
+            button = False
 
     form = journalForm()
     actions = Action.objects.filter(plant=plant, date__gt=timezone.now() - datetime.timedelta(days=1))
@@ -65,7 +70,8 @@ def journal(request, name):
     return render(request, 'polls/journal.html', {
         'actions': actions,
         'plant': plant,
-        'form': form
+        'form': form,
+        'button': button
         })
 
 @login_required
@@ -85,6 +91,49 @@ def createplant(request):
             'form': form
             })
 
+
+@login_required
+def removeplant(request, id):
+    plant = get_object_or_404(Plant, pk=id, is_active=True)
+
+    if request.method == 'POST':
+        plant.is_active = False
+        plant.save()
+        return redirect('/')
+    return render(request, 'polls/removeplant.html', {
+        'plant': plant
+    })
+
+def editplant(request, id):
+    plant = get_object_or_404(Plant, pk=id, is_active=True)
+    if request.method == 'POST':
+        form = editplantForm(request.POST)
+        if form.is_valid():
+
+            if form.data['datetime'].strip():
+                plant.datetime = form.data['datetime'].strip()
+            if form.data['time'].strip():
+                plant.time = form.data['time'].strip()
+
+            if plant.datetime and plant.time:
+                if form.data['name'].strip():
+                    plant.name = form.data['name'].strip()
+                if form.data['numb'].strip():
+                    plant.numb = form.data['numb'].strip()
+
+                plant.save()
+                messages.success(request, 'Растение успешно отредактировано')
+            else:
+                raise ValidationError('Форма заполнена некорректно')
+
+            return redirect('/%s/journal' % id)
+
+    else:
+        form = editplantForm()
+    return render(request, 'polls/editplant.html', {
+            'form': form,
+            'plant': plant
+            })
 
 #def fff(request):
 #

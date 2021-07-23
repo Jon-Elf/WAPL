@@ -1,16 +1,18 @@
 {% extends "polls/base.html" %}
 {% load bootstrap4 %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item active" aria-current="page">главная</li>
+{% endblock %}
+
+
 {% block content %}
 {% if messages %}
 <ul class="messages">
-    {% for message in messages %}
-    <div class="alert alert-success" role="alert">
-      {{ message }}
-    </div>
-    {% endfor %}
 </ul>
 {% endif %}
-<h1 class="text-center">последние полития</h1>
+<a href="/createplant">создать растение</a><br><br>
+<h1 class="text-center">Растения</h1>
 <div class="row">
           <div class="col-2"></div>
           <div class="col-8">
@@ -19,15 +21,19 @@
       <thead>
         <tr>
           <th>растение</th>
-          <th class="text-end">дата</th>
+          <th class="text-end">дата последнего полива</th>
         </tr>
       </thead>
       <tbody>
-        {% for date in dates %}
+        {% for plant in plants %}
         <tr>
-            <td> <a href= {{ plant.pk }}/journal class="btn btn-primary" role="button">{{ date.name }}</a>
+            <td> <a href="{{ plant.pk }}/journal">{{ plant.name }}</a>
           </td>
-            <td class="text-end"> {{ date.last_watering }} </td>
+          {% if plant.last_watering %}
+            <td class="text-end"> {{ plant.last_watering }} </td>
+          {% else %}
+          <td class="text-end">Растение не поливалось</td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>

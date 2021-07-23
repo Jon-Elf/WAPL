@@ -4,17 +4,18 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 class Plant(models.Model):
-    ordering = ['-actions.date']
+    ordering = ['-name']
     name = models.CharField(max_length=20)
     datetime = models.TimeField(blank=True, null=True)
     time = models.IntegerField(blank=True, null=True)
     numb = models.IntegerField()
+    is_active = models.BooleanField(default=True)
     def __str__(self):
         return(self.name)
     def last_watering(self):
-        if self.actions:
-            return
-        return 'Не поливался'
+        if self.actions.first():
+            return(self.actions.last().date)
+        return None
 
 class Action(models.Model):
     ordering = ['-date']

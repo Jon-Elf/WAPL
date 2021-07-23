@@ -55,10 +55,32 @@ class createplantForm(forms.Form):
                 'datetime': self.cleaned_data['datetime'],
                 'time': self.cleaned_data['time']}
 
-        if Plant.objects.filter(name=data['name']):
-            raise ValidationError('Такое название уже существует.')
         if Plant.objects.filter(numb=data['numb']):
-            raise ValidationError('Такой номр клапана уже существует')
+            raise ValidationError('Такой номер клапана уже существует')
         if data['datetime'] and not data['time'] or data['time'] and not data['datetime']:
             raise ValidationError('Форма заполнена некорректно')
+        return data
+
+class editplantForm(forms.Form):
+    name = forms.CharField(label='Введите название для точки полива', max_length=20, required=False)
+    numb = forms.IntegerField(label='Введите номер клапана', required=False)
+    datetime = forms.TimeField(label='Время, когда растение будет поливаться', required=False)
+    time = forms.IntegerField(label='Сколько времени будет растение поливатся (в секундах)',
+                              max_value=300, min_value=1, required=False)
+
+    def clean(self):
+        if 'datetime' not in self.cleaned_data:
+            raise ValidationError('Неверное значение для времени полива')
+
+        print('\n\n', self.cleaned_data, '\n\n')
+        data = {'name': self.cleaned_data['name'],
+                'numb': self.cleaned_data['numb'],
+                'datetime': self.cleaned_data['datetime'],
+                'time': self.cleaned_data['time']}
+
+        if Plant.objects.filter(numb=data['numb']):
+            raise ValidationError('Такой номер клапана уже существует')
+
+        if not data['name'].strip() and not data['numb'] and not data['datetime'] and not data['time']:
+            raise ValidationError('Заполните хотя бы одно поле')
         return data

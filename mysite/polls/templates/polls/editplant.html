@@ -1,0 +1,22 @@
+{% extends 'polls/base.html' %}
+{% load bootstrap4 %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="/">главная</a></li>
+<li class="breadcrumb-item"><a href="/{{plant.pk}}/journal">{{plant.name}}</a></li>
+<li class="breadcrumb-item active" aria-current="page">edit</li>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post" class="form">
+  <p>название: {{ plant.name }}</p>
+  <p>клапан: {{ plant.numb }}</p>
+  <p>поливается в: {{ plant.datetime }}</p>
+  <p>продолжительность полива: {{ plant.time }} секунд</p>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">edit</button>
+    {% endbuttons %}
+</form>
+{% endblock %}
