@@ -20,7 +20,7 @@ class Plant(models.Model):
 class Action(models.Model):
     ordering = ['-date']
     plant = models.ForeignKey(Plant, related_name='actions', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='actions', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='actions', on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField('date')
     time = models.IntegerField()
     done = models.CharField(max_length=11, default='Исполняется')

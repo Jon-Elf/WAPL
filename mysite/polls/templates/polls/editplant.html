@@ -9,10 +9,6 @@
 
 {% block content %}
 <form action="" method="post" class="form">
-  <p>название: {{ plant.name }}</p>
-  <p>клапан: {{ plant.numb }}</p>
-  <p>поливается в: {{ plant.datetime }}</p>
-  <p>продолжительность полива: {{ plant.time }} секунд</p>
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}

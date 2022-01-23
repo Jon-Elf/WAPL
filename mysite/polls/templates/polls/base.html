@@ -37,14 +37,15 @@
         </ol>
       </nav>
 
-
-      {% for message in messages %}
-      {% block messages %}
-      <div class="alert alert-success" role="alert">
-        {{ message }}
-      </div>
-      {% endblock %}
-      {% endfor %}
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+              {{message}}
+            </div>
+          {% endfor %}
+        </ul>
+      {% endif %}
 
       {% block content %}Чувак, ты забыл прописать блок-контент
       {% endblock %}

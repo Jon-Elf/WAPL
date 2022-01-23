@@ -13,6 +13,7 @@ from .models import Plant, Action
 import datetime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.forms.models import model_to_dict
 
 
 @login_required
@@ -44,16 +45,22 @@ def reg(request):
 @login_required
 def journal(request, id):
     plant = get_object_or_404(Plant, pk=id, is_active=True)
-
+    initial = model_to_dict(plant)
+    if not initial['time']:
+        initial['time'] = 30
     if request.method == 'POST':
-        if plant.actions.last():
-            if plant.actions.last().done == 'Исполняется':
-                messages.success(request, 'Растение уже поливается')
-                return redirect(request.path)
-        a = Action(plant=plant, user=request.user, date=timezone.now(), time=5)
-        a.save()
-        return redirect(request.path)
+        form_time = wateringForm(request.POST, initial=initial)
+        if form_time.is_valid():
+            if plant.actions.last():
+                if plant.actions.last().done == 'Исполняется':
+                    messages.success(request, 'Растение уже поливается')
+                    return redirect(request.path)
 
+            a = Action(plant=plant, user=request.user, date=timezone.now(), time=form_time.data['time'])
+            a.save()
+            return redirect(request.path)
+
+    form_time = wateringForm(initial=initial)
     button = True
     if plant.actions.last():
         if plant.actions.last().done == 'Исполняется':
@@ -71,7 +78,8 @@ def journal(request, id):
         'actions': actions,
         'plant': plant,
         'form': form,
-        'button': button
+        'button': button,
+        'form_time': form_time
         })
 
 @login_required
@@ -79,16 +87,17 @@ def createplant(request):
     if request.method=='POST':
         form = createplantForm(request.POST)
         if form.is_valid():
-            print('добавляю растение')
             p = Plant(name=form.cleaned_data['name'], numb=form.cleaned_data['numb'],
                       time=form.cleaned_data['time'], datetime=form.cleaned_data['datetime'])
+            if Plant.objects.filter(numb=form.cleaned_data['numb'], is_active=True).first():
+                messages.warning(request, 'Указанный клапан уже используется в другом растении. Это может привести к проблемам')
             p.save()
             messages.success(request, 'Растение успешно добавлено')
             return redirect('/')
     else:
         form = createplantForm()
     return render(request, 'polls/createplant.html', {
-            'form': form
+            'form': form,
             })
 
 
@@ -104,32 +113,32 @@ def removeplant(request, id):
         'plant': plant
     })
 
+@login_required
 def editplant(request, id):
     plant = get_object_or_404(Plant, pk=id, is_active=True)
+    initial = model_to_dict(plant)
+
     if request.method == 'POST':
-        form = editplantForm(request.POST)
+        form = editplantForm(request.POST, initial=initial)
         if form.is_valid():
 
-            if form.data['datetime'].strip():
-                plant.datetime = form.data['datetime'].strip()
-            if form.data['time'].strip():
-                plant.time = form.data['time'].strip()
+            plant.datetime = form.cleaned_data['datetime']
+            plant.time = form.data['time']
+            plant.name = form.data['name']
+            plant.numb = form.data['numb']
+            if not plant.datetime:
+                plant.datetime = None
+            if not plant.time:
+                plant.time = None
 
-            if plant.datetime and plant.time:
-                if form.data['name'].strip():
-                    plant.name = form.data['name'].strip()
-                if form.data['numb'].strip():
-                    plant.numb = form.data['numb'].strip()
-
-                plant.save()
-                messages.success(request, 'Растение успешно отредактировано')
-            else:
-                raise ValidationError('Форма заполнена некорректно')
-
+            if Plant.objects.filter(numb=form.data['numb'], is_active=True).first():
+                messages.warning(request, 'Указанный клапан уже используется в другом растении. Это может привести к проблемам')
+            plant.save()
+            messages.success(request, 'Растение успешно отредактировано')
             return redirect('/%s/journal' % id)
 
     else:
-        form = editplantForm()
+        form = editplantForm(initial=initial)
     return render(request, 'polls/editplant.html', {
             'form': form,
             'plant': plant
