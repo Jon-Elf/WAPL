@@ -13,15 +13,14 @@
 
     
 ## Установка приложения
-    8. Переставьте флешку в raspberry, подключите монитор, и
-        сточник питания, клавиатуру и интернет.
-    9. У вас начнёт загружаться raspberry. Подождите, 
-        пока всё загрузится. По умолчанию логин pi, пароль raspberry
+        !!! Все шаги нужно делать в точности как указано. То, что написано заглавными буквами пишите заглавными буквами !!!
+    8. Переставьте флешку в raspberry, подключите монитор, сточник питания, клавиатуру и интернет.
+    9. У вас начнёт загружаться raspberry. Подождите, пока всё загрузится. По умолчанию логин pi, пароль raspberry
     10. скачайте все необходимые инструменты: sudo apt install python3-pip supervisor git
-    11. скачайте проект: git clone https://github.com/Jon-Elf/WAPL
-    12. Зайдите в папку с приложением: cd WAPL
-    13. Скачайте все требуемые модули: pip install -r requirements.txt
-    14. Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
+    11. скачайте проект: git clone https://github.com/jon-elf/WAPL
+    13. Скачайте все требуемые модули: pip install -r WAPL/requirements.txt
+    14. Создайте базу данных: python3 WAPL/mysite/manage.py migrate
+    15. Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
     
     (Если хотите в дальнейшем подключится к raspberry удалённо через SSH): 
     sudo systemctl enable ssh
