@@ -13,27 +13,25 @@
 
     
 ## Установка приложения
-    8. Скачайте WAPL. На главной странице проекта вы найдёте зелёную кнопку, 
-       которая позволит вам скачать ZIP-архив.
-    9. Найдите на флешке папку home
-    10. Разархивируйте и переместите папку WAPL-master в папку home. Переименуйте её в WAPL
-    11. Переставьте флешку в raspberry, подключите монитор, и
+    8. Переставьте флешку в raspberry, подключите монитор, и
         сточник питания, клавиатуру и интернет.
-    12. У вас начнёт загружаться raspberry. Подождите, 
+    9. У вас начнёт загружаться raspberry. Подождите, 
         пока всё загрузится. По умолчанию логин pi, пароль raspberry
-    13. Зайдите в папку с приложением: cd WAPL
-    14. Скачайте утилиту pip: sudo apt install python3-pip
-    15. Скачайте supervisor: sudo apt install supervisor
-    16. Скачайте все требуемые модули: pip install -r requirements.txt
-        (Если хотите в дальнейшем подключится к raspberry удалённо через SSH): 
-        sudo systemctl enable sshsudo systemctl start ssh
+    10. скачайте все необходимые инструменты: sudo apt install python3-pip supervisor git
+    11. скачайте проект: git clone https://github.com/Jon-Elf/WAPL
+    12. Зайдите в папку с приложением: cd WAPL
+    13. Скачайте все требуемые модули: pip install -r requirements.txt
+    
+    (Если хотите в дальнейшем подключится к raspberry удалённо через SSH): 
+    sudo systemctl enable ssh
+    sudo systemctl start ssh
     
 ## Включение
-    13. Пропишите в терминале команду supervisord
+    14. Запустите проект: sudo systemctl start supervisor
     
 ## Подключение
-    14. Что бы узнать айпи raspberry, пропишите команду: ip a
-    15. Что бы подключиться к веб-интерфейсу, перейдите по этой ссылке: https//x.x.x.x:8000/, 
+    15. Что бы узнать айпи raspberry, пропишите команду: ip a
+    16. Что бы подключиться к веб-интерфейсу, перейдите по этой ссылке: https//x.x.x.x:8000/, 
         где x.x.x.x - айпи raspberry. 
-    16. Логин - admin,  пароль - 123pass321. Вы можете изменить это зайдя на https//x.x.x.x:8000/admin.
+    17. Логин - admin,  пароль - 123pass321. Вы можете изменить это зайдя на https//x.x.x.x:8000/admin.
         
