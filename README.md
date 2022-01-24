@@ -6,7 +6,7 @@
        в этом вам поможет Raspberry pi imager  
        https://www.raspberrypi.com/software/
     3. Откройте Raspberry pi imager
-    4. Выберите ОС Raspberry pi Lite
+    4. Выберите ОС Raspberry pi Lite (Находится во вкладке other)
     5. Выберите вашу флешку
     6. Нажмите кнопку write
     7. Подождите, пока ОС установится на вашу флешку
