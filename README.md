@@ -1,4 +1,4 @@
-# WAPL documentation
+# WAPL installation
 
 ## установка Raspberry OS на флешку
     1. Подключите вашу флешку к компютеру.
