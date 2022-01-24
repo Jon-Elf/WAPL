@@ -21,6 +21,7 @@
     11. скачайте проект: git clone https://github.com/Jon-Elf/WAPL
     12. Зайдите в папку с приложением: cd WAPL
     13. Скачайте все требуемые модули: pip install -r requirements.txt
+    14. Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/config_programs.conf /etc/supervisor/conf.d/
     
     (Если хотите в дальнейшем подключится к raspberry удалённо через SSH): 
     sudo systemctl enable ssh
