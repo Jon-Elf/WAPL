@@ -27,12 +27,24 @@
     sudo systemctl enable ssh
     sudo systemctl start ssh
     
-## Включение
-    14. Запустите проект: sudo systemctl start supervisor
+## Включение, подключение, выключение
+    Запустить сервер: sudo systemctl start supervisor (Возможны сложности. Читайте пункт 'примечания')
+    Выключить сервер: sudo systemctl stop supervisor
     
-## Подключение
-    15. Что бы узнать айпи raspberry, пропишите команду: ip a
-    16. Что бы подключиться к веб-интерфейсу, перейдите по этой ссылке: https//x.x.x.x:8000/, 
-        где x.x.x.x - айпи raspberry. 
-    17. Логин - admin,  пароль - 123pass321. Вы можете изменить это зайдя на https//x.x.x.x:8000/admin.
+    Что бы подключиться к веб-интерфейсу, перейдите по этой ссылке: https//x.x.x.x:8000/, 
+    где x.x.x.x - айпи raspberry. 
+    Что бы узнать айпи raspberry можно прописать 'ip a'
+    
+### Примечания
+    При первом запуске сервера есть вероятность того, что supervisor не увидит конфиг. (Версия 5.10 raspberry pi OS lite, supervisor 4.1.0)
+    Что бы это проверить, выполните следущие шаги:
+    1. Пропишите 'sudo supervisorctl'
+    2. Пропишите 'status'
+    3. Если вы увидели что-то вроде этого, то всё в порядке. Можете прописать 'quit'
+        do_actions                       RUNNING
+        wapl_server                      RUNNING
+    4. Если же нет, то вам необходимо перезапустить supervisor. Пропишите 'quit', далее пропишите 'systemctl reload supervisor'.
+       Всё должно заработать.
+ 
+
         
