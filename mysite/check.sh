@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "PYLINT"
-pylint mysite/polls
+pylint mysite/wapl
 
 echo -e "\n\n\nPEP8\n"
 
