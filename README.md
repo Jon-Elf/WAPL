@@ -20,7 +20,7 @@
     - Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
     
 ### Включение, подключение, выключение, создание админа
-	Запустить supervisor: sudo systemctl start supervisor (supervisor управляет сервером и обработчиком команд, он необходим)
+    Запустить supervisor: sudo systemctl start supervisor (supervisor управляет сервером и обработчиком команд, он необходим)
     Запустить сервер: sudo supervisorctl start wapl_server do_actions
     Выключить сервер: sudo supervisorctl stop wapl_server do_actions
 
@@ -39,6 +39,9 @@
         wapl_server                      RUNNING
     Если же нет, то вам необходимо перезапустить supervisor. выполните 'systemctl reload supervisor'.
     Всё должно заработать.
- 
+    
+    
+ ## Обновление
+    Что бы обновиться, нужно выполнить команду 'git pull' находясь в папке WAPL.
 
         
