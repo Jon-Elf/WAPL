@@ -13,11 +13,15 @@
 ### Установка приложения
 - Переставьте флешку в raspberry, подключите монитор, сточник питания, клавиатуру и интернет
 - У вас начнёт загружаться raspberry. Подождите, пока всё загрузится. Запустите терминал. По умолчанию логин pi, пароль raspberry
-- Скачайте все необходимые инструменты: sudo apt install python3-pip supervisor git
+- Скачайте все необходимые инструменты: sudo apt install python3-pip python3-venv supervisor git
 - Скачайте проект: git clone https://github.com/jon-elf/WAPL
-- Скачайте все требуемые модули: pip install -r WAPL/requirements.txt
-- Создайте базу данных: python3 WAPL/mysite/manage.py migrate
+- Зайдите в каталог WAPL: cd WAPL
+- Создайте виртуальное окружение: python3 -m venv venv
+- Активируйте виртуальное окружение: source venv/bin/activate
+- Скачайте все требуемые модули: pip install -r requirements.txt
+- Создайте базу данных: python3 mysite/manage.py migrate
 - Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
+- Деактивируйте виртуальное окружение: deactivate
     
 ### Включение, подключение, выключение, создание админа
 - Запустить supervisor: sudo systemctl start supervisor (supervisor управляет сервером и обработчиком команд, он необходим)
