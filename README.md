@@ -8,7 +8,7 @@
 
 
 ### установка Raspberry OS на флешку
--Подробная инструкция [здесь](https://www.raspberrypi.com/documentation/computers/getting-started.html#setting-up-your-raspberry-pi). Советуется скачать Raspberry OS Lite
+- Подробная инструкция [здесь](https://www.raspberrypi.com/documentation/computers/getting-started.html#setting-up-your-raspberry-pi). Советуется скачать Raspberry OS Lite
     
 ### Установка приложения
 - Переставьте флешку в raspberry, подключите монитор, сточник питания, клавиатуру и интернет
