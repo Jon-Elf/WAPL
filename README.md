@@ -16,8 +16,8 @@
 - Скачайте все необходимые инструменты: sudo apt install python3-pip python3-venv supervisor git
 - Скачайте проект: git clone https://github.com/jon-elf/WAPL
 - Зайдите в каталог WAPL: cd WAPL
-- Создайте виртуальное окружение: python3 -m venv venv
-- Активируйте виртуальное окружение: source venv/bin/activate
+- Создайте виртуальное окружение: python3 -m venv wapl_env
+- Активируйте виртуальное окружение: source wapl_venv/bin/activate
 - Скачайте все требуемые модули: pip install -r requirements.txt
 - Создайте базу данных: python3 mysite/manage.py migrate
 - Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
