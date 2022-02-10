@@ -19,7 +19,8 @@
 - Создайте виртуальное окружение: python3 -m venv wapl_env
 - Активируйте виртуальное окружение: source wapl_env/bin/activate
 - Скачайте все требуемые модули: pip install -r requirements.txt
-- Создайте базу данных: python3 mysite/manage.py migrate
+- выполните команду: python3 manage.py makemigrations wapl
+- Создайте базу данных: python3 manage.py migrate
 - Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
 - Деактивируйте виртуальное окружение: deactivate
     
