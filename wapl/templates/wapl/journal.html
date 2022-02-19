@@ -1,14 +1,14 @@
 {% extends 'wapl/base.html' %}
 {% load bootstrap4 %}
 {% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="/">главная</a></li>
+<li class="breadcrumb-item"><a href="/">Home</a></li>
 <li class="breadcrumb-item active" aria-current="page">{{plant.name}}</li>
 {% endblock %}
 
 {% block content %}
 
-<a href="/{{ plant.pk }}/removeplant"><button type="button" class="btn btn-danger">удалить растение</button></a>
-<a href="/{{ plant.pk }}/editplant"><button type="button" class="btn btn-secondary">редактировать растение</button></a><br><br>
+<a href="/{{ plant.pk }}/removeplant"><button type="button" class="btn btn-danger">remove watering point</button></a>
+<a href="/{{ plant.pk }}/editplant"><button type="button" class="btn btn-secondary">edit watering point</button></a><br><br>
 
 <div class="row">
           <div class="col-2"></div>
@@ -16,20 +16,20 @@
 
     <table class="table table-striped table-bordered border-dark">
       <tr>
-        <th>название</th>
+        <th>name</th>
         <td> {{plant.name}} </td>
       </tr>
       <tr>
-        <th>номер клапана</th>
+        <th>channel number</th>
         <td> {{plant.numb}} </td>
       </tr>
       <tr>
-        <th>время автоматического полития</th>
+        <th>automatic watering time</th>
         <td> {{plant.datetime}} </td>
       </tr>
       <tr>
-        <th>продолжительноть полива (сек)</th>
-        <td> {{plant.time|default_if_none:"не указано"}} </td>
+        <th>watering duration (in sec)</th>
+        <td> {{plant.time|default_if_none:"not specified"}} </td>
       </tr>
     </table>
   </div>
@@ -42,7 +42,7 @@
     {% csrf_token %}
     {% bootstrap_form form_time %}
     {% buttons %}
-          <center><button class="btn btn-success btn-lg" type="submit">полить</button></center>
+          <center><button class="btn btn-success btn-lg" type="submit">water</button></center>
         {% endbuttons %}
       </form>
 {% endif %}
@@ -54,9 +54,9 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>дата</th>
-          <th>инициатор</th>
-          <th class="text-end">время</th>
+          <th>date</th>
+          <th>initiator</th>
+          <th class="text-end">time</th>
           <th>статус</th>
         </tr>
       </thead>
@@ -64,8 +64,8 @@
         {% for action in actions %}
         <tr>
             <td> {{action.date}} </td>
-            <td> {% if action.user %} {{action.user.username}} {% else %} авто {% endif %}</td>
-            <td class="text-end"> {{ action.time }} секунд</td>
+            <td> {% if action.user %} {{action.user.username}} {% else %} auto {% endif %}</td>
+            <td class="text-end"> {{ action.time }} seconds</td>
             <td>{{action.done}}</td>
         </tr>
         {% endfor %}

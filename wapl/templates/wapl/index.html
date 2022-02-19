@@ -2,13 +2,13 @@
 {% load bootstrap4 %}
 
 {% block breadcrumbs %}
-<li class="breadcrumb-item active" aria-current="page">главная</li>
+<li class="breadcrumb-item active" aria-current="page">Home</li>
 {% endblock %}
 
 
 {% block content %}
-<a href="/createplant"><button type="button" class="btn btn-success">создать растение</button></a>
-<h1 class="text-center">Растения</h1>
+<a href="/createplant"><button type="button" class="btn btn-success">create watering point</button></a>
+<h1 class="text-center">Watering points</h1>
 <div class="row">
           <div class="col-2"></div>
           <div class="col-8">
@@ -16,8 +16,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>растение</th>
-          <th class="text-end">дата последнего полива</th>
+          <th>name</th>
+          <th class="text-end">date of last watering</th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +28,7 @@
           {% if plant.last_watering %}
             <td class="text-end"> {{ plant.last_watering }} </td>
           {% else %}
-          <td class="text-end">Растение не поливалось</td>
+          <td class="text-end">not watered</td>
           {% endif %}
         </tr>
         {% endfor %}

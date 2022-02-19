@@ -1,4 +1,3 @@
-"""Этот модуль отвечает за модели"""
 import datetime
 from django.db import models
 from django.utils import timezone
@@ -23,6 +22,6 @@ class Action(models.Model):
     user = models.ForeignKey(User, related_name='actions', on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateTimeField('date')
     time = models.IntegerField()
-    done = models.CharField(max_length=11, default='Исполняется')
+    done = models.CharField(max_length=11, default='in progress')
     def __str__(self):
         return self.plant.name

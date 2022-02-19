@@ -1,4 +1,3 @@
-"""модуль отвечающий за вьюшки"""
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -31,7 +30,7 @@ def reg(request):
                 user = User.objects.create_superuser(form.data['username'], '', form.data['password'])
                 user.save()
                 print(User.objects.all())
-                messages.success(request, 'Вы успешно зарегестрировались!')
+                messages.success(request, 'You have successfully registered!')
                 return redirect('/')
         else:
             form = regForm()
@@ -52,8 +51,8 @@ def journal(request, id):
         form_time = wateringForm(request.POST, initial=initial)
         if form_time.is_valid():
             if plant.actions.last():
-                if plant.actions.last().done == 'Исполняется':
-                    messages.success(request, 'Растение уже поливается')
+                if plant.actions.last().done == 'in progress':
+                    messages.success(request, 'Watering point already activated')
                     return redirect(request.path)
 
             a = Action(plant=plant, user=request.user, date=timezone.now(), time=form_time.data['time'])
@@ -63,7 +62,7 @@ def journal(request, id):
     form_time = wateringForm(initial=initial)
     button = True
     if plant.actions.last():
-        if plant.actions.last().done == 'Исполняется':
+        if plant.actions.last().done == 'in progress':
             button = False
 
     form = journalForm()
@@ -90,9 +89,9 @@ def createplant(request):
             p = Plant(name=form.cleaned_data['name'], numb=form.cleaned_data['numb'],
                       time=form.cleaned_data['time'], datetime=form.cleaned_data['datetime'])
             if Plant.objects.filter(numb=form.cleaned_data['numb'], is_active=True).first():
-                messages.warning(request, 'Указанный клапан уже используется в другом растении. Это может привести к проблемам')
+                messages.warning(request, 'This channel is already in use in another watering point. This can lead to problems')
             p.save()
-            messages.success(request, 'Растение успешно добавлено')
+            messages.success(request, 'Watering point successfully created')
             return redirect('/')
     else:
         form = createplantForm()
@@ -132,9 +131,9 @@ def editplant(request, id):
                 plant.time = None
 
             if Plant.objects.filter(numb=form.data['numb'], is_active=True).first():
-                messages.warning(request, 'Указанный клапан уже используется в другом растении. Это может привести к проблемам')
+                messages.warning(request, 'This channel is already in use in another watering point. This can lead to problems')
             plant.save()
-            messages.success(request, 'Растение успешно отредактировано')
+            messages.success(request, 'Watering point successfully edited.')
             return redirect('/%s/journal' % id)
 
     else:
