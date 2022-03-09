@@ -1,54 +1,56 @@
 # WAPL
 
-**WAPL - Веб интерфейс для полива растений. Можно создавать точки полива, настроить автоматический полив.
-	   Написан на python, использует фреймворк Django. Используется встроенный в Django веб-сервер, 
-	   он не предназначен для больших нагрузок.**
+**WAPL - Web interface for watering plants. You can create watering points, set up automatic watering.
+	Written in python, uses the Django framework. Uses Django's built-in web server,
+	it is not designed for heavy loads. Will only work on raspberry.**
 
-## WAPL установка
+## WAPL installation
 
 
-### установка Raspberry OS на флешку
-- Подробная инструкция [здесь](https://www.raspberrypi.com/documentation/computers/getting-started.html#setting-up-your-raspberry-pi). Советуется скачать Raspberry OS Lite
+### installing Raspberry OS on a flash drive
+- detailed instruction [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#setting-up-your-raspberry-pi). It is advised to download the Raspberry OS Lite
     
-### Установка приложения
-- Переставьте флешку в raspberry, подключите монитор, сточник питания, клавиатуру и интернет
-- У вас начнёт загружаться raspberry. Подождите, пока всё загрузится. Запустите терминал. По умолчанию логин pi, пароль raspberry
-- Скачайте все необходимые инструменты: sudo apt install python3-pip python3-venv supervisor git
-- Скачайте проект: git clone https://github.com/jon-elf/WAPL
-- Зайдите в каталог WAPL: cd WAPL
-- Создайте виртуальное окружение: python3 -m venv wapl_env
-- Активируйте виртуальное окружение: source wapl_env/bin/activate
-- Скачайте все требуемые модули: pip install -r requirements.txt
-- выполните команду: python3 manage.py makemigrations wapl
-- Создайте базу данных: python3 manage.py migrate
-- Создайте симлинк для корректной работы конфига: sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
-- Деактивируйте виртуальное окружение: deactivate
+### Application installation
+- connect the flash drive to raspberry, connect the monitor, power supply, keyboard and internet
+- Your raspberry will start loading. Wait for everything to load. Launch terminal. Default login is 'pi', password is 'raspberry'
+- **Run these commands::**
+```
+sudo apt install python3-pip python3-venv supervisor git
+git clone https://github.com/jon-elf/WAPL
+cd WAPL
+python3 -m venv wapl_env
+source wapl_env/bin/activate
+pip install -r requirements.txt
+python3 manage.py makemigrations wapl
+python3 manage.py migrate
+sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
+deactivate
+```
     
-### Включение, подключение, выключение, создание админа
-- Запустить supervisor: sudo systemctl start supervisor (supervisor управляет сервером и обработчиком команд, он необходим)
-- Запустить сервер: sudo supervisorctl start wapl_server do_actions
-- Выключить сервер: sudo supervisorctl stop wapl_server do_actions
-- Создать админа: python3 WAPL/mysite/manage.py createsuperuser (Email писать не обязательно)
+### Turning on, connecting, turning off
+- Run supervisor: ```sudo systemctl start supervisor``` (supervisor manages the server and command handler, it is required)
+- Turn on the server: ```sudo supervisorctl start wapl_server do_actions```
+- Turn off the server: ```sudo supervisorctl stop wapl_server do_actions```
 
-Что бы подключиться к веб-интерфейсу, перейдите по этой ссылке: https//x.x.x.x:8000/, 
-где x.x.x.x - IP-адрес raspberry. 
-Что бы узнать IP-адрес raspberry, нужно выполнить эту команду: ip a
+To connect to the web interface, follow this link: https//x.x.x.x:8000/, 
+where x.x.x.x is raspberry IP-adress. 
+To find out the IP address of the raspberry, you need to run this command: ```ip a```
 
 	
     
-#### Примечание
-При первом запуске supervisor'а есть вероятность того, что он не увидит конфиг. (Версия 5.10 raspberry pi OS lite, supervisor 4.1.0)
-Что бы проверить, что всё работает правильно, выполните команду 'sudo supervisorctl status'
-Если вы увидели что-то вроде этого, то всё в порядке.
+#### Note
+When you first start the supervisor, there is a chance that he will not see the config. (Version 5.10 raspberry pi OS lite, supervisor 4.1.0)
+To check that everything is working correctly, run the command ```sudo supervisorctl status```
+If you see something like this, then everything works.
 ```
-    do_actions                       RUNNING
-    wapl_server                      RUNNING
+    do_actions RUNNING
+    wapl_server RUNNING
 ```
-Если же нет, то вам необходимо перезапустить supervisor. Выполните 'systemctl reload supervisor'.
-Всё должно заработать.
+If not, then you need to restart supervisor. Run ```systemctl reload supervisor```
+Everything should work.
     
     
- ## Обновление
- Что бы обновиться, нужно выполнить команду 'git pull' находясь в папке WAPL.
+ ## Updating
+To update, you need to run the ```git pull``` command while you are in the WAPL folder.
 
         
