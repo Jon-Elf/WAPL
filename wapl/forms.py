@@ -2,7 +2,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
-from .models import Plant, Action
+from .models import Plant, Action, Channel
 
 
 class regForm(forms.Form):
@@ -20,7 +20,7 @@ class regForm(forms.Form):
         if len(data['password']) < 5:
             raise ValidationError('Your password must contain at least 5 characters')
         return data
-	
+    
 class journalForm(forms.Form):
     choice = forms.ChoiceField(label='period', choices=[
         ('week', 'week'),
@@ -41,27 +41,13 @@ class settimeForm(forms.Form):
         return data
 
 class createplantForm(forms.Form):
+    choices=[]
     name = forms.CharField(label='Name for the watering point', max_length=20)
-    numb = forms.IntegerField(label='Channel number')
+    numb = forms.ChoiceField(label='Channel number', choices=choices)
     datetime = forms.TimeField(label='Watering time', required=False)
     time = forms.IntegerField(label='Watering duration (in sec)',
                               max_value=300, min_value=1, required=False)
 
-
-    def clean(self):
-        data = {'name': self.cleaned_data['name'],
-                'numb': self.cleaned_data['numb'],
-                'datetime': self.cleaned_data['datetime'],
-                'time': self.cleaned_data['time']}
-
-        return data
-
-class editplantForm(forms.Form):
-    name = forms.CharField(label='Name for the watering point', max_length=20, required=True)
-    numb = forms.IntegerField(label='Channel number', required=True)
-    datetime = forms.TimeField(label='Watering time', required=False)
-    time = forms.IntegerField(label='Watering durations (in sec)',
-                              max_value=300, min_value=1, required=False)
 
     def cleaned_datetime(self):
         if 'datetime' not in self.cleaned_data:
@@ -82,6 +68,7 @@ class editplantForm(forms.Form):
     def cleaned_name(self):
         data = {'name': self.cleaned_data['name'].strip()}
         return data
+    
 
 
 class wateringForm(forms.Form):
@@ -90,4 +77,10 @@ class wateringForm(forms.Form):
     def clean_time(self):
         data = {'time': self.cleaned_data['time']}
 
+        return data
+
+class addChannelForm(forms.Form):
+    number = forms.IntegerField(label='Channel')
+    def clean_number(self):
+        data = {'number': self.cleaned_data['number']}
         return data

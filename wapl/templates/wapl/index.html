@@ -7,7 +7,46 @@
 
 
 {% block content %}
+
+<a href="addchannel"><button type="button" class="btn btn-success">add channel</button></a>
+
+
+<h1 class="text-center">Channels</h1>
+<div class="row">
+          <div class="col-2"></div>
+          <div class="col-8">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>number</th>
+			<th></th>
+        </tr>
+      </thead>
+      <tbody>
+			{% if not channels %}
+			<td>You haven't set up channels yet.</td>
+			<td></td>
+			{% endif %}
+			{% for channel in channels %}
+		  <tr>
+            <td> {{ channel.number }}</td>
+			<td class="text-end"><a href="{{ channel.number }}/removechannel"><button type="button" class="btn btn-danger">delete</button></a></td>
+		  </tr>
+			{% endfor %}
+        
+      </tbody>
+    </table>
+  </div>
+  <div class="col-2"></div>
+</div>
+
+<br>
+<br>
+<br>
+
 <a href="/createplant"><button type="button" class="btn btn-success">create watering point</button></a>
+
 <h1 class="text-center">Watering points</h1>
 <div class="row">
           <div class="col-2"></div>
@@ -21,8 +60,13 @@
         </tr>
       </thead>
       <tbody>
-        {% for plant in plants %}
-        <tr>
+        
+		{% if not plants %}
+			<td>You haven't create watering points yet.</td>
+			<td></td>
+			{% endif %}
+		{% for plant in plants %}
+		  <tr>
             <td> <a href="{{ plant.pk }}/journal">{{ plant.name }}</a>
           </td>
           {% if plant.last_watering %}
@@ -30,8 +74,9 @@
           {% else %}
           <td class="text-end">not watered</td>
           {% endif %}
-        </tr>
-        {% endfor %}
+		</tr>
+		{% endfor %}
+        
       </tbody>
     </table>
   </div>

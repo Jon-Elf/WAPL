@@ -8,7 +8,7 @@ from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import Plant, Action
+from .models import Plant, Action, Channel
 import datetime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -17,16 +17,44 @@ from django.forms.models import model_to_dict
 
 @login_required
 def index(request):
+    if request.method == 'POST':
+        addForm=addChannelForm(request.POST)
+        if addForm.is_valid():
+            newChannel = Channel(number=addForm.data['number'], is_active=True)
+            newChannel.save()
+            return redirect(request.path)
+    else:
+        addForm=addChannelForm()
     return render(request, 'wapl/index.html', {
+        'addForm': addForm,
         'plants': Plant.objects.filter(is_active=True),
-    })
+        'channels': Channel.objects.filter(is_active=True),})
 
+def removeChannel(request, number):
+    channel = get_object_or_404(Channel, number=number, is_active=True)
+    if request.method == 'POST':
+        channel.is_active = False
+        channel.save()
+        return redirect('/')
+    
+    return render(request, 'wapl/removeChannel.html', {'channel': channel})
+
+def addChannel(request):
+    form = addChannelForm()
+    if request.method == 'POST':
+        form = addChannelForm(request.POST)
+        if form.is_valid():
+            channel = Channel(number=form.data['number'])
+            channel.save()
+            messages.success(request, 'Channel successfully added')
+            return redirect('/')
+    
+    return render(request, 'wapl/addChannel.html', {'form': form})
 def reg(request):
     if not User.objects.all():
         if request.method == 'POST':
             form = regForm(request.POST)
             if form.is_valid():
-                print(form.data)
                 user = User.objects.create_superuser(form.data['username'], '', form.data['password'])
                 user.save()
                 print(User.objects.all())
@@ -52,7 +80,7 @@ def journal(request, id):
         if form_time.is_valid():
             if plant.actions.last():
                 if plant.actions.last().done == 'in progress':
-                    messages.success(request, 'Watering point already activated')
+                    messages.warning(request, 'Watering point is already activated')
                     return redirect(request.path)
 
             a = Action(plant=plant, user=request.user, date=timezone.now(), time=form_time.data['time'])
@@ -83,8 +111,10 @@ def journal(request, id):
 
 @login_required
 def createplant(request):
+    choices = [(channel.number, channel.number) for channel in Channel.objects.filter(is_active=True)]
     if request.method=='POST':
         form = createplantForm(request.POST)
+        form.fields['numb'].choices=choices
         if form.is_valid():
             p = Plant(name=form.cleaned_data['name'], numb=form.cleaned_data['numb'],
                       time=form.cleaned_data['time'], datetime=form.cleaned_data['datetime'])
@@ -95,6 +125,7 @@ def createplant(request):
             return redirect('/')
     else:
         form = createplantForm()
+        form.fields['numb'].choices=choices
     return render(request, 'wapl/createplant.html', {
             'form': form,
             })
@@ -114,11 +145,13 @@ def removeplant(request, id):
 
 @login_required
 def editplant(request, id):
+    choices = [(channel.number, channel.number) for channel in Channel.objects.filter(is_active=True)]
     plant = get_object_or_404(Plant, pk=id, is_active=True)
     initial = model_to_dict(plant)
 
     if request.method == 'POST':
-        form = editplantForm(request.POST, initial=initial)
+        form = createplantForm(request.POST, initial=initial)
+        form.fields['numb'].choices=choices
         if form.is_valid():
 
             plant.datetime = form.cleaned_data['datetime']
@@ -137,11 +170,17 @@ def editplant(request, id):
             return redirect('/%s/journal' % id)
 
     else:
-        form = editplantForm(initial=initial)
+        form = createplantForm(initial=initial)
+        form.fields['numb'].choices=choices
     return render(request, 'wapl/editplant.html', {
             'form': form,
             'plant': plant
             })
+
+def channelsinfo(request):
+    return render(request, 'wapl/channelsinfo.html', {
+        'channels': Channel.objects.all(),
+    })
 
 #def fff(request):
 #

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from wapl.models import Action, Plant
+from wapl.models import Action, Plant, Channel
 import time
 import datetime
 from django.contrib.auth.models import User
@@ -14,7 +14,7 @@ class Command(BaseCommand):
     last_task = 0
     already = []
     day = ''
-    chan_list = [5, 6, 13, 16, 19, 20, 21, 26]
+    
 
     def setup_channels(self, chan_list):
         logging.info('Начинается установка каналов %s.' % chan_list)
@@ -23,13 +23,14 @@ class Command(BaseCommand):
 
     def activate(self, numb, time, action):
         self.end_tasks.append({'numb': numb, 'time': time, 'action': action})
+        self.setup_channels(numb)
         logging.info('Клапан %s (%s) активируется...' % (numb, action.plant.name))
         GPIO.output(numb, GPIO.LOW)
         logging.info('Клапан %s (%s) активирован.' % (numb, action.plant.name))
 
     def disactivate(self, task):
         self.end_tasks.remove(task)
-        task['action'].done = 'Завершён'
+        task['action'].done = 'Completed'
         task['action'].save()
         logging.info('Клапан %s (%s) дизактивируется...' % (task['numb'], task['action'].plant.name))
         GPIO.output(task['numb'], GPIO.HIGH)
@@ -47,7 +48,7 @@ class Command(BaseCommand):
                 if str(plant.datetime)[:-3] == time.strftime('%H:%M', time.localtime()):
                     logging.info('У растения %s (клапан %s) время авт. полива.' % (plant.name, plant.numb))
                     new_action = Action(plant=plant,
-                                        done='Исполняется', time=plant.time, date = datetime.datetime.now())
+                                        done='in progress', time=plant.time, date = datetime.datetime.now())
                     new_action.save()
                     self.already.append(plant)
 
@@ -67,12 +68,11 @@ class Command(BaseCommand):
         logging.error('aaaaaa')
         logging.info('do_actions запустился')
         GPIO.setmode(GPIO.BCM)
-        self.setup_channels(self.chan_list)
         while True:
             time.sleep(0.5)
             self.check_next_day
             self.check_end_tasks(self.end_tasks)
-            for action in Action.objects.filter(done='Исполняется', pk__gt=self.last_task):
+            for action in Action.objects.filter(done='in progress', pk__gt=self.last_task):
                 logging.info('Новый Action.')
                 self.activate(action.plant.numb, action.time, action)
                 self.last_task=action.pk

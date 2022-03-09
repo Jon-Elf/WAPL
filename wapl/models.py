@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+
 class Plant(models.Model):
     ordering = ['-name']
     name = models.CharField(max_length=20)
@@ -25,3 +26,10 @@ class Action(models.Model):
     done = models.CharField(max_length=11, default='in progress')
     def __str__(self):
         return self.plant.name
+
+class Channel(models.Model):
+	ordering=['-number']
+	number=models.IntegerField()
+	is_active = models.BooleanField(default=True)
+	def __str__(self):
+		return str(self.number)
