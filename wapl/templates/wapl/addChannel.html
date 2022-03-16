@@ -1,0 +1,17 @@
+{% extends 'wapl/base.html' %}
+{% load bootstrap4 %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="/">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">add channel</li>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+          <button class="btn btn-success btn-lg" type="submit">add</button>
+        {% endbuttons %}
+{% endblock %}
+ 

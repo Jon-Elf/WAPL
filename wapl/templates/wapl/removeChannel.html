@@ -1,0 +1,18 @@
+{% extends 'wapl/base.html' %}
+{% load bootstrap4 %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="/">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">remove</li>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post" class="form">
+  {% csrf_token %}
+  {% buttons %}
+      <div class="d-grid gap-2">
+        <button class="btn btn-danger" type="submit">remove</button>
+      </div>
+  {% endbuttons %}
+</form>
+{% endblock %}

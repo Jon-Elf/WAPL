@@ -30,6 +30,7 @@ def index(request):
         'plants': Plant.objects.filter(is_active=True),
         'channels': Channel.objects.filter(is_active=True),})
 
+@login_required
 def removeChannel(request, number):
     channel = get_object_or_404(Channel, number=number, is_active=True)
     if request.method == 'POST':
@@ -39,6 +40,7 @@ def removeChannel(request, number):
     
     return render(request, 'wapl/removeChannel.html', {'channel': channel})
 
+@login_required
 def addChannel(request):
     form = addChannelForm()
     if request.method == 'POST':
@@ -50,6 +52,7 @@ def addChannel(request):
             return redirect('/')
     
     return render(request, 'wapl/addChannel.html', {'form': form})
+
 def reg(request):
     if not User.objects.all():
         if request.method == 'POST':
@@ -177,6 +180,7 @@ def editplant(request, id):
             'plant': plant
             })
 
+@login_required
 def channelsinfo(request):
     return render(request, 'wapl/channelsinfo.html', {
         'channels': Channel.objects.all(),
