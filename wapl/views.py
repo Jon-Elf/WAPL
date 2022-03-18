@@ -14,9 +14,12 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.forms.models import model_to_dict
 
-
-@login_required
 def index(request):
+    if request.user.is_anonymous:
+        if User.objects.count()>0:
+            return redirect('/admin/login/?next=/')
+        else:
+            return redirect('/reg')
     if request.method == 'POST':
         addForm=addChannelForm(request.POST)
         if addForm.is_valid():
