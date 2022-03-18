@@ -29,8 +29,8 @@ deactivate
     
 ### Turning on, connecting, turning off
 - Run supervisor: ```sudo systemctl start supervisor``` (supervisor manages the server and command handler, it is required)
-- Turn on the server: ```sudo supervisorctl start wapl_server do_actions```
-- Turn off the server: ```sudo supervisorctl stop wapl_server do_actions```
+- Turn on the server: ```sudo supervisorctl start wapl_wsgi do_actions```
+- Turn off the server: ```sudo supervisorctl stop wapl_wsgi do_actions```
 
 To connect to the web interface, follow this link: https//x.x.x.x:8000/, 
 where x.x.x.x is raspberry IP-adress. 
