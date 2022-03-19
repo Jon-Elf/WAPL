@@ -22,9 +22,10 @@ cd WAPL
 python3 -m venv wapl_env
 source wapl_env/bin/activate
 pip install -r requirements.txt
-python3 manage.py makemigrations wapl
 python3 manage.py migrate
 sudo ln -s /home/pi/WAPL/supervisor_programs.conf /etc/supervisor/conf.d/
+sudo supervisorctl reread
+sudo supervisorctl reload
 deactivate
 ```
     
