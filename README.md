@@ -15,6 +15,7 @@
 - Your raspberry will start loading. Wait for everything to load. Launch terminal. Default login is 'pi', password is 'raspberry'
 - **Run these commands::**
 ```
+sudo apt update
 sudo apt install python3-pip python3-venv supervisor git
 git clone https://github.com/jon-elf/WAPL
 cd WAPL
