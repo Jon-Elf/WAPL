@@ -124,9 +124,6 @@ def createplant(request):
         if form.is_valid():
             p = Plant(name=form.cleaned_data['name'], numb=form.cleaned_data['numb'],
                       time=form.cleaned_data['time'], datetime=form.cleaned_data['datetime'])
-            if Plant.objects.filter(numb=form.cleaned_data['numb'], is_active=True).count()>1:
-                messages.warning(request, 'This channel is already in use in another watering point. This can lead to problems')
-            p.save()
             messages.success(request, 'Watering point successfully created')
             return redirect('/')
     else:
@@ -168,9 +165,6 @@ def editplant(request, id):
                 plant.datetime = None
             if not plant.time:
                 plant.time = None
-
-            if Plant.objects.filter(numb=form.data['numb'], is_active=True).count()>1:
-                messages.warning(request, 'This channel is already in use in another watering point. This can lead to problems')
             plant.save()
             messages.success(request, 'Watering point successfully edited.')
             return redirect('/%s/journal' % id)
