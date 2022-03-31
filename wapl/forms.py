@@ -42,8 +42,8 @@ class settimeForm(forms.Form):
 
 class createplantForm(forms.Form):
     choices=[]
-    name = forms.CharField(label='Name for the watering point', max_length=20)
-    numb = forms.ChoiceField(label='Channel number', choices=choices)
+    name = forms.CharField(label='Name for the watering point', max_length=50)
+    numb = forms.ChoiceField(label='GPIO pin', choices=choices)
     datetime = forms.TimeField(label='Watering time', required=False)
     time = forms.IntegerField(label='Watering duration (in sec)',
                               max_value=300, min_value=1, required=False)
@@ -80,7 +80,7 @@ class wateringForm(forms.Form):
         return data
 
 class addChannelForm(forms.Form):
-    number = forms.IntegerField(label='Channel')
+    number = forms.IntegerField(label='GPIO pin')
     def clean_number(self):
         data = {'number': self.cleaned_data['number']}
         return data
