@@ -1,6 +1,6 @@
 # WAPL
 
-**WAPL - Web interface for watering plants. You can create watering points, set up automatic watering.
+**WAPL - (WAtering PLants) Web interface for watering plants. You can create watering points, set up automatic watering.
 	Written in python, uses the Django framework. Uses Django's built-in web server,
 	it is not designed for heavy loads. Will only work on raspberry.**
 
